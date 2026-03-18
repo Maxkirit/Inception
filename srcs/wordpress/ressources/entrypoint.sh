@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #write the CLI commands to setup wordpress here
 

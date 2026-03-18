@@ -1,5 +1,46 @@
 services:
-  wordpress:
-    build: wordpress/Dockerfile
+    wordpress:
+        container_name: wordpress
+        build: ./wordpress
+        volumes:
+            - ./path/to/wordpress/assets:/workdir
+        networks:
+            - inception
+        env_file: ../.env
+        restart: unless-stopped
+        depends_on:
+            mariadb:
+                condition: healthy
+
+    mariadb:
+        container_name: mariadb
+        build: ./mariadb
+        volumes:
+            - ./path/to/db:/workdir
+        networks:
+            - inception
+        env_file:
+            - ../.env
+        restart: unless-stopped
+    
+    nginx:
+        container_name: nginx
+        build: ./nginx
+        volumes:
+            - ./path/to/wordpress/assets:/workdir
+        ports:
+            - "443:443"
+        networks:
+            - inception
+        env_file:
+            - ../.env
+        restart: unless-stopped
+        depends_on:
+            mariadb:
+                condition: healthy
+
+networks:
+    inception:
+        driver: bridge
 
 secrets:
