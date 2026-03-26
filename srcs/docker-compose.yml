@@ -3,11 +3,13 @@ services:
         container_name: wordpress
         build: ./wordpress
         volumes:
-            - ./path/to/wordpress/assets:/workdir
+            - nginx_wp:/workdir
         networks:
             - inception
         env_file: ../.env
         restart: unless-stopped
+        secrets:
+            - wpadminpwd
         depends_on:
             mariadb:
                 condition: service_healthy
@@ -19,18 +21,22 @@ services:
             args:
                 - MARIADB_CONFIG_FILE=mariadb_config_file.txt
         volumes:
-            - ./mariadb/data:/
+            - mariadb:/var/lib/mysql
         networks:
             - inception
         env_file:
             - ../.env
+        secrets:
+            - dbpassword
+            - dbrootpassword
+
         restart: unless-stopped
     
     nginx:
         container_name: nginx
         build: ./nginx
         volumes:
-            - ./path/to/wordpress/assets:/workdir
+            - nginx_wp:/
         ports:
             - "443:443"
         networks:
@@ -46,4 +52,18 @@ networks:
     inception:
         driver: bridge
 
-# secrets:
+volumes:
+    mariadb:
+        name: mariadb_volume
+    nginx_wp:
+        name: wp_volume
+    
+
+secrets:
+    dbpassword:
+        file: ../secrets/db_password.txt
+    dbrootpassword:
+        file: ../secrets/db_root_password.txt
+    wpadminpwd:
+        file: ../secrets/wp_admin_password.txt
+
