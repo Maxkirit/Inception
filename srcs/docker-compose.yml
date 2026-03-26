@@ -10,13 +10,16 @@ services:
         restart: unless-stopped
         depends_on:
             mariadb:
-                condition: healthy
+                condition: service_healthy
 
     mariadb:
         container_name: mariadb
-        build: ./mariadb
+        build:
+            context: ./mariadb
+            args:
+                - MARIADB_CONFIG_FILE=mariadb_config_file.txt
         volumes:
-            - ./path/to/db:/workdir
+            - ./mariadb/data:/
         networks:
             - inception
         env_file:
@@ -37,10 +40,10 @@ services:
         restart: unless-stopped
         depends_on:
             mariadb:
-                condition: healthy
+                condition: service_healthy
 
 networks:
     inception:
         driver: bridge
 
-secrets:
+# secrets:

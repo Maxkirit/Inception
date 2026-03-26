@@ -2,7 +2,6 @@ FROM alpine:3.22
 
 #update package repos and install basic packages
 RUN apk update && apk upgrade && apk curl && \
-    apk add bash && \
     apk add php && \
     apk add php-fpm && \
     apk add php-mysql && \
