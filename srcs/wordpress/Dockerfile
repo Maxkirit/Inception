@@ -1,23 +1,24 @@
 FROM alpine:3.22
 
 #update package repos and install basic packages
-RUN apk update && apk upgrade && apk curl && \
+RUN apk update && apk upgrade && apk add curl && \
     apk add php && \
     apk add php-fpm && \
     apk add php-mysql && \
     apk add fcgi && \
     app add php-cgi && \
-    rm /var/cache/apk/*
+    rm -rf /var/cache/apk/*
 
 #acts as 'cd' command
 WORKDIR /tmp
 
-COPY ./ressources/. .
-COPY ../.env .
+COPY --chmod=+x ./ressources/build_script.sh ./ressources/entrypoint.sh ./ 
+
+RUN ./build_script.sh
+
+#replaces existing www.conf by yours
+COPY ./ressources/www.conf /etc/php82/php-fpm.d/www.conf
 
 EXPOSE 443
 
-#this command runs FPM in the foreground 
-CMD php-fpm8.2 -F
-
-ENTRYPOINT [ "entrypoint.sh" ]
+ENTRYPOINT [ "/tmp/entrypoint.sh" ]

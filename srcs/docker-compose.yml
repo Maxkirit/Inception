@@ -10,6 +10,7 @@ services:
         restart: unless-stopped
         secrets:
             - wpadminpwd
+            - dbpassword
         depends_on:
             mariadb:
                 condition: service_healthy
@@ -29,7 +30,6 @@ services:
         secrets:
             - dbpassword
             - dbrootpassword
-
         restart: unless-stopped
     
     nginx:
