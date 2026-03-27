@@ -8,12 +8,12 @@ RUN apk update && \
 
 
 #adds the confing file that binds the right IP for the DB to its expected place before install
-COPY my.cnf /etc/mysql/.
+COPY my.cnf /etc/my.cnf
 COPY --chmod=+x entrypoint.sh .
 
 EXPOSE 3306
 
-HEALTHCHECK --interval=10s --timeout=30s --start-period=15s --retries=3 \
-            CMD mariadb -e 'SELECT @@datadir;' || exit 1
+HEALTHCHECK --interval=10s --timeout=30s --start-period=3s --retries=3 \
+            CMD mariadb -u root --execute="SELECT 1;" || exit 1
 
 ENTRYPOINT [ "./entrypoint.sh" ]
