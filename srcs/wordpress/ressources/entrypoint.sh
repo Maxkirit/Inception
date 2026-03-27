@@ -2,6 +2,7 @@
 
 DB_PASSWORD=$(cat /run/secrets/dbpassword)
 WP_ADMIN_PASSWORD=$(cat /run/secrets/wpadminpwd)
+WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 
 
 if ! wp core is-installed --allow-root; then
@@ -20,6 +21,14 @@ wp core install --allow-root --url=https://$DOMAIN_NAME \
                 --admin_password=$WP_ADMIN_PASSWORD \
                 --admin_email=$WP_ADMIN_EMAIL \
                 --title=inception
+
+#create empty page to test for comments
+PAGE_ID=$(wp post create --post_type=page --post_title='Test Comments' --post_status=publish --porcelain)
+wp post update $PAGE_ID --comment_status=open
+fi
+
+if ! wp user get $WP_USER &> /dev/null; then
+    wp user create $WP_USER $WP_USER_EMAIL --role=author --user_pass=$WP_USER_PASSWORD
 fi
 
 exec php-fpm82 -F

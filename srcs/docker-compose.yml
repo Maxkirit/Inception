@@ -11,6 +11,7 @@ services:
         secrets:
             - wpadminpwd
             - dbpassword
+            - wp_user_password
         depends_on:
             mariadb:
                 condition: service_healthy
@@ -72,4 +73,6 @@ secrets:
         file: ../secrets/wp_admin_password.txt
     ssl_certificate_key:
         file: ../secrets/ssl_key.pem
+    wp_user_password:
+        file: ../secrets/wp_user_password.txt
 
