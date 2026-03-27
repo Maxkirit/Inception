@@ -48,6 +48,7 @@ services:
         restart: unless-stopped
         depends_on:
             - wordpress
+            - mariadb
 
 networks:
     inception:

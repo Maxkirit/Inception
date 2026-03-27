@@ -6,13 +6,13 @@ RUN apk update && apk upgrade && \
 
 EXPOSE 443
 
-COPY ./default.conf /etc/nginx/conf.d/.
+COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY ./ssl_cert.pem /etc/nginx/ssl/ssl_cert.pem
 
-# RUN adduser -D -g 'www' www && \
-#     mkdir /www && \
-#     chown -R www:www /var/lib/nginx && \
-#     chown -R www:www /www
+RUN adduser -D -g 'www' www && \
+    mkdir /www && \
+    chown -R www:www /var/lib/nginx && \
+    chown -R www:www /www
 
 # prevents nginx to run as a daemon and the container to exit immediately
 CMD ["nginx", "-g", "daemon off;"]
