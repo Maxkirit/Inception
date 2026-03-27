@@ -49,7 +49,7 @@ services:
         restart: unless-stopped
         depends_on:
             wordpress:
-              condition: service_started
+              condition: service_healthy
             mariadb:
               condition: service_healthy
 

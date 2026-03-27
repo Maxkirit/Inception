@@ -1,7 +1,7 @@
 FROM alpine:3.22
 
 #update package repos and install basic packages
-RUN apk update && apk upgrade && apk add curl && \
+RUN apk update && apk upgrade && apk add curl && apk add netcat-openbsd && \
     apk add php82 \
             php82-fpm \
             php82-pdo_mysql \
@@ -30,6 +30,9 @@ RUN chown -R nobody:nobody /var/www/html
 
 #replaces existing www.conf by yours
 COPY ./ressources/www.conf /etc/php82/php-fpm.d/www.conf
+
+HEALTHCHECK --interval=10s --timeout=5s --retries=10 --start-period=30s \
+            CMD nc -z localhost 9000 || exit 1
 
 EXPOSE 443
 

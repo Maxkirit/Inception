@@ -1,11 +1,10 @@
 #!/bin/sh
-
+set -e
 DB_PASSWORD=$(cat /run/secrets/dbpassword)
 WP_ADMIN_PASSWORD=$(cat /run/secrets/wpadminpwd)
 WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 
-
-if ! wp core is-installed --allow-root; then
+if ! wp core is-installed --allow-root 2>/dev/null; then
 #install code here
 #db_user is a user with GRANT ALL PRIVILLEGES on the db
 #server is name of container on the docker network
