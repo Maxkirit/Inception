@@ -47,8 +47,10 @@ services:
           - ssl_certificate_key
         restart: unless-stopped
         depends_on:
-            - wordpress
-            - mariadb
+            wordpress:
+              condition: service_started
+            mariadb:
+              condition: service_healthy
 
 networks:
     inception:
