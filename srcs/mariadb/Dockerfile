@@ -4,7 +4,7 @@ RUN apk update && \
     apk upgrade && \
     apk add curl && \
     apk add mariadb mariadb-client && \
-    rm /var/cache/apk/*
+    rm -rf /var/cache/apk/*
 
 
 #adds the confing file that binds the right IP for the DB to its expected place before install

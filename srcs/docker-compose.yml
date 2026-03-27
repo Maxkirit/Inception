@@ -36,13 +36,15 @@ services:
         container_name: nginx
         build: ./nginx
         volumes:
-            - nginx_wp:/
+            - nginx_wp:/var/www/html
         ports:
             - "443:443"
         networks:
             - inception
         env_file:
             - ../.env
+        secrets:
+          - ssl_certificate_key
         restart: unless-stopped
         depends_on:
             - wordpress
@@ -65,4 +67,6 @@ secrets:
         file: ../secrets/db_root_password.txt
     wpadminpwd:
         file: ../secrets/wp_admin_password.txt
+    ssl_certificate_key:
+        file: ../secrets/ssl_key.pem
 
