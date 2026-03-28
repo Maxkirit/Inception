@@ -3,6 +3,21 @@ DB_PASSWORD=$(cat /run/secrets/dbpassword)
 WP_ADMIN_PASSWORD=$(cat /run/secrets/wpadminpwd)
 WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 
+MAX_RETRIES=30
+RETRY_COUNT=0
+
+#wait for db to have tables intialized - prevents race condition
+until mysql -h"mariadb" -u"root" -p"$(cat /run/secrets/dbrootpassword)" -e "SHOW TABLES IN $MARIA_DB_NAME;" &>/dev/null; do
+    if [ $RETRY_COUNT -ge $MAX_RETRIES ]; then
+        >&2 echo "database didn't start in time"
+        exit 1
+    fi
+    >&2 echo "datbase not ready yet"
+    sleep 1
+    RETRY_COUNT=$((RETRY_COUNT + 1))
+done
+
+
 if ! wp core is-installed --allow-root 2>/dev/null; then
 #install code here
 #db_user is a user with GRANT ALL PRIVILLEGES on the db
