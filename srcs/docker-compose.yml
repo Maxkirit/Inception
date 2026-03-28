@@ -11,6 +11,7 @@ services:
         secrets:
             - wpadminpwd
             - dbpassword
+            - dbrootpassword
             - wp_user_password
         depends_on:
             mariadb:
