@@ -5,15 +5,15 @@ MAX_RETRIES=30
 RETRY_COUNT=0
 
 #wait for db to have tables intialized - prevents race condition
-until mysql -h"mariadb" -u"root" -p"$(cat /run/secrets/dbrootpassword)" -e "SHOW TABLES IN \`${MARIA_DB_NAME}\`;" 2>/dev/null; do
-    if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
-        echo "database didn't start in time" >&2
-        exit 1
-    fi
-    echo "datbase not ready yet" >&2
-    sleep 1
-    RETRY_COUNT=$((RETRY_COUNT + 1))
-done
+# until mysql -h"mariadb" -u"root" -p"$(cat /run/secrets/dbrootpassword)" -e "SHOW TABLES IN \`${MARIA_DB_NAME}\`;" 2>/dev/null; do
+#     if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
+#         echo "database didn't start in time" >&2
+#         exit 1
+#     fi
+#     echo "datbase not ready yet" >&2
+#     sleep 1
+#     RETRY_COUNT=$((RETRY_COUNT + 1))
+# done
 
 
 if ! wp core is-installed --allow-root 2>/dev/null; then
