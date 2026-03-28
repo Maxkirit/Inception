@@ -29,6 +29,6 @@ CREATE USER IF NOT EXISTS '$MARIA_DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';
 GRANT ALL PRIVILEGES ON $MARIA_DB_NAME.* TO '$MARIA_DB_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
-mariadb-admin -u root -p"$DB_ROOT_PASSWORD" shutdown
+# mariadb-admin -u root -p"$DB_ROOT_PASSWORD" shutdown
 fi
 exec mariadbd --user=mysql # replaces the sh process with mariadbd the daemon not the monitor
