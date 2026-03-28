@@ -5,7 +5,7 @@ MAX_RETRIES=30
 RETRY_COUNT=0
 
 #wait for db to have tables intialized - prevents race condition
-until mysql -h"mariadb" -u"root" -p"$(cat /run/secrets/dbrootpassword)" -e "SHOW TABLES IN $MARIA_DB_NAME;" >/dev/null 2>&1; do
+until mysql -h"mariadb" -u"root" -p"$(cat /run/secrets/dbrootpassword)" -e "SHOW TABLES IN $MARIA_DB_NAME;" >&2; do
     if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
         echo "database didn't start in time" >&2
         exit 1
