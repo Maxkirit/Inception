@@ -1,6 +1,20 @@
 #!/bin/sh
 set -e #exits on errors
 
+MAX_RETRIES=30
+RETRY_COUNT=0
+
+#wait for db to have tables intialized - prevents race condition
+until mysql -h"mariadb" -u"root" -p"$(cat /run/secrets/dbrootpassword)" -e "SHOW TABLES IN $MARIA_DB_NAME;" &>/dev/null; do
+    if [ $RETRY_COUNT -ge $MAX_RETRIES]; then
+        >&2 echo "database didn't start in time"
+        exit 1
+    fi
+    >&2 echo "datbase not ready yet"
+    sleep 1
+    RETRY_COUNT=$((RETRY_COUNT + 1))
+done
+
 if [ ! -f "/var/lib/mysql/ibdata1" ]; then #space is important for shell between [ and !
 DB_PASSWORD=$(cat /run/secrets/dbpassword)
 DB_ROOT_PASSWORD=$(cat /run/secrets/dbrootpassword)

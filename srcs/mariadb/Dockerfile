@@ -13,7 +13,7 @@ COPY --chmod=+x entrypoint.sh .
 
 EXPOSE 3306
 
-HEALTHCHECK --interval=10s --timeout=30s --start-period=20s --retries=3 \
+HEALTHCHECK --interval=10s --timeout=30s --start-period=40s --retries=5 \
             CMD mariadb -u root -p"$(cat /run/secrets/dbrootpassword)" --execute="SELECT 1;" || exit 1
 
 ENTRYPOINT [ "./entrypoint.sh" ]
