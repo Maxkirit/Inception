@@ -1,6 +1,7 @@
 #!/bin/sh
 set -e
 
+rm -rf /backups/full
 mkdir -p /backups/full /backups/incremental
 
 #initial full backup
