@@ -4,6 +4,7 @@ set -e
 BACKUP_DIR="/backups"
 FULL_DIR="$BACKUP_DIR/full"
 INC_DIR="$BACKUP_DIR/incremental/$(date +%Y%m%d_%H%M%S)"
+echo $INC_DIR
 
 if [ ! -d "$FULL_DIR/backup_logfile" ]; then
     echo "No full backup found"
