@@ -31,4 +31,7 @@ FLUSH PRIVILEGES;
 EOF
 mariadb-admin -u root -p"$DB_ROOT_PASSWORD" shutdown
 fi
+#creates runtime dir for the connection sockets. ensures it exists at every runtime not just first install
+mkdir -p /run/mysqld
+chown -R mysql:mysql /run/mysqld
 exec mariadbd --user=mysql # replaces the sh process with mariadbd the daemon not the monitor
