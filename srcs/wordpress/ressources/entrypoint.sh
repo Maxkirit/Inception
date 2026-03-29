@@ -41,9 +41,8 @@ wp post update "$PAGE_ID" --comment_status=open --allow-root
 wp config set WP_REDIS_HOST 'redis' --add
 wp config set WP_REDIS_PORT 6379 --add --raw
 #php snippet to add to the config file
-snippet='$redis_server = array(\n'host' => 'redis',\n'port' => 6379,\n);'
-#add it before the termination line
-sed -i "/\/\* That's all, stop editing/i $snippet" /var/www/html/wp-config.php
+printf '$redis_server = array(\n    '"'"'host'"'"' => '"'"'redis'"'"',\n    '"'"'port'"'"' => 6379,\n);\n' \
+    | sed -i "/\/\* That's all, stop editing/r /dev/stdin" /var/www/html/wp-config.php
 wp plugin install redis-cache --activate
 wp redis enable
 fi

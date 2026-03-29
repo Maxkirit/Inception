@@ -2,11 +2,9 @@ FROM alpine:3.22
 
 RUN apk update && apk add --no-cache redis
 
-#this creates a non root user to start redis with.
-#More secure as if vulnerabitly allows attacker to take control of container,
+#Using redis user instead of root more secure as if vulnerabitly allows attacker to take control of container,
 #no root privilege access to the container
-RUN adduser -S -D -H -s /sbin/nologin redis \
-    && mkdir -p /var/lib/redis \
+RUN mkdir -p /var/lib/redis \
     && chown redis:redis /var/lib/redis
 
 EXPOSE 6379
