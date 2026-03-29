@@ -17,4 +17,7 @@ HEALTHCHECK --interval=10s --timeout=30s --start-period=60s --retries=5 \
     CMD mariadb -u root -p"$(cat /run/secrets/dbrootpassword)" \
         -e "SHOW DATABASES LIKE '${MARIA_DB_NAME}';" | grep -q "${MARIA_DB_NAME}" || exit 1
 
+#creates socket directory at runtime so restarts work
+RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
+
 ENTRYPOINT [ "./entrypoint.sh" ]
