@@ -5,7 +5,7 @@ set -e
 mariadb-backup --backup --target-dir=/backup/full \
     --host="$DB_HOST" \
     --user="root" \
-    --password=$(cat /run/secrets/dbrootpassword)
+    --password="$(cat /run/secrets/dbrootpassword)"
 
 #prepares i guess
 mariadb-backup --prepare --target-dir=/backup/full \
