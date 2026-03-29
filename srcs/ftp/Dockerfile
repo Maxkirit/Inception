@@ -2,7 +2,7 @@ FROM alpine:3.22
 
 RUN apk upgrade && apk add --no-cache vsftpd shadow
 
-RUN usermod -d /var/www/html/ftp ftp
+RUN usermod -d /var/www/html/ftp ftp && echo "/sbin/nologin" >> /etc/shells
 
 COPY --chmod=+x ./entrypoint.sh ./
 COPY ./vsftpd.conf /etc/vsftpd/vsftpd.conf
