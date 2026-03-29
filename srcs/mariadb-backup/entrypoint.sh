@@ -2,13 +2,13 @@
 set -e
 
 #initial full backup
-mariadbbackup --backup --target-dir=/backup/full \
-    --host=$DB_HOST \
-    --user=$MARIA_DB_USER \
-    --password=$(cat /run/secrets/dbpassword)
+mariadb-backup --backup --target-dir=/backup/full \
+    --host="$DB_HOST" \
+    --user="root" \
+    --password=$(cat /run/secrets/dbrootpassword)
 
 #prepares i guess
-mariabackup --prepare --target-dir=/backup/full \
+mariadb-backup --prepare --target-dir=/backup/full \
 
 #everyday at 1am
 echo "0 2 * * * /usr/local/bin/backup.sh incremental >> /var/log/backup.log 2>&1" | crontab -

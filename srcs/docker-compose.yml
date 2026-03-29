@@ -104,7 +104,7 @@ services:
         restart: unless-stopped
         env_file: ../.env
         secrets:
-          - dbpassword
+          - dbrootpassword
         depends_on:
             mariadb:
               condition: service_healthy

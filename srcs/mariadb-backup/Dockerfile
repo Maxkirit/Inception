@@ -9,4 +9,4 @@ RUN mkdir -p /backups/full
 #needs to be in bin to be found in cron
 COPY --chmod=+x ./entrypoint.sh ./backup.sh /usr/local/bin/
 
-ENTRYPOINT [ "entrypoint.sh" ]
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]

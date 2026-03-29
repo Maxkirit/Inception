@@ -11,9 +11,9 @@ if [ ! -d "$FULL_DIR/backup_logfile" ]; then
 fi
 
 mkdir -p "$INC_DIR"
-mariabackup --backup \
+mariadb-backup --backup \
     --host="$DB_HOST" \
-    --user="$MARIA_DB_USER" \
-    --password="$(cat /run/secrets/dbpassword)" \
+    --user="root" \
+    --password="$(cat /run/secrets/dbrootpassword)" \
     --target-dir="$INC_DIR" \
     --incremental-basedir="$FULL_DIR"
