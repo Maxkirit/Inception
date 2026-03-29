@@ -77,6 +77,23 @@ services:
           - inception
         restart: unless-stopped
 
+    ftp:
+        container_name: ftp
+        build: ./ftp
+        networks:
+          - inception
+        secrets:
+          - ftp_password
+        ports:
+          - "21:21" #control channel
+          - "21100-21110:21100-21110" #passive channel
+        volumes:
+          - nginx_wp:/var/www/html
+        restart: unless-stopped
+        depends_on:
+            wordpress:
+              condition: service_healthy
+
 networks:
     inception:
         driver: bridge
@@ -99,4 +116,6 @@ secrets:
         file: ../secrets/ssl_key.pem
     wp_user_password:
         file: ../secrets/wp_user_password.txt
+    ftp_password:
+        file: ../secrets/ftp_password.txt
 
