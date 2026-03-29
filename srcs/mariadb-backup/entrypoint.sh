@@ -6,7 +6,6 @@ mariadb-backup --backup --target-dir=/backup/full \
     --host="$DB_HOST" \
     --user="$MARIA_DB_BACKUP_USER" \
     --password="$(cat /run/secrets/dbbackuppassword)" \
-    --no-lock
 
 #prepares i guess
 mariadb-backup --prepare --target-dir=/backup/full \

@@ -101,6 +101,7 @@ services:
         networks:
           - inception
         volumes:
+          - mariadb:/var/lib/mysql
           - mariadb-copy:/backups #will reach db across docker network
         restart: unless-stopped
         env_file: ../.env

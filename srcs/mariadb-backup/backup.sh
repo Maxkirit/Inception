@@ -17,4 +17,3 @@ mariadb-backup --backup \
     --password="$(cat /run/secrets/dbbackuppassword)" \
     --target-dir="$INC_DIR" \
     --incremental-basedir="$FULL_DIR" \
-    --no-lock
