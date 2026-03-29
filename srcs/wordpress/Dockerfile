@@ -13,7 +13,8 @@ RUN apk update && apk upgrade && apk add curl && apk add netcat-openbsd && \
             php82-curl \
             php82-gd \
             php82-zip \
-            php82-opcache && \
+            php82-opcache \
+            php82-redis && \
     rm -rf /var/cache/apk/*
 
 #on Alpine, php is installed as php82 so for the install to work, we make a symlink
