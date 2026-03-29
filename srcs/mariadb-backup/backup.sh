@@ -13,7 +13,7 @@ fi
 mkdir -p "$INC_DIR"
 mariadb-backup --backup \
     --host="$DB_HOST" \
-    --user="root" \
-    --password="$(cat /run/secrets/dbrootpassword)" \
+    --user="$MARIA_DB_BACKUP_USER" \
+    --password="$(cat /run/secrets/dbbackuppassword)" \
     --target-dir="$INC_DIR" \
     --incremental-basedir="$FULL_DIR"

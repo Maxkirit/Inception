@@ -34,6 +34,7 @@ services:
         secrets:
             - dbpassword
             - dbrootpassword
+            - dbbackuppassword
         restart: unless-stopped
     
     nginx:
@@ -104,7 +105,7 @@ services:
         restart: unless-stopped
         env_file: ../.env
         secrets:
-          - dbrootpassword
+          - dbbackuppassword
         depends_on:
             mariadb:
               condition: service_healthy
@@ -127,6 +128,8 @@ secrets:
         file: ../secrets/db_password.txt
     dbrootpassword:
         file: ../secrets/db_root_password.txt
+    dbbackuppassword:
+        file: ../secrets/db_backup_password.txt
     wpadminpwd:
         file: ../secrets/wp_admin_password.txt
     ssl_certificate_key:

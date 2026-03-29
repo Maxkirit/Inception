@@ -2,8 +2,6 @@
 set -e #exits on errors
 
 if [ ! -f "/var/lib/mysql/ibdata1" ]; then #space is important for shell between [ and !
-DB_PASSWORD=$(cat /run/secrets/dbpassword)
-DB_ROOT_PASSWORD=$(cat /run/secrets/dbrootpassword)
 mkdir /run/mysqld
 chown -R mysql:mysql /run/mysqld #mysql becomes owner of dir mysqld
 mariadb-install-db --user=mysql --datadir=/var/lib/mysql
@@ -15,21 +13,25 @@ mariadb-secure-installation <<EOF
 
 n
 Y
-$DB_ROOT_PASSWORD
-$DB_ROOT_PASSWORD
+$(cat /run/secrets/dbrootpassword)
+$(cat /run/secrets/dbrootpassword)
 Y
 Y
 Y
 Y
 EOF
-mariadb -u root -p"$DB_ROOT_PASSWORD" <<EOF #restarts the mariadb monitor
+mariadb -u root -p"$(cat /run/secrets/dbrootpassword)" <<EOF #restarts the mariadb monitor
 
 CREATE DATABASE IF NOT EXISTS $MARIA_DB_NAME;
-CREATE USER IF NOT EXISTS '$MARIA_DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';
+CREATE USER IF NOT EXISTS '$MARIA_DB_USER'@'%' IDENTIFIED BY '$(cat /run/secrets/dbpassword)';
 GRANT ALL PRIVILEGES ON $MARIA_DB_NAME.* TO '$MARIA_DB_USER'@'%';
 FLUSH PRIVILEGES;
+
+CREATE USER '$MARIA_DB_BACKUP_USER'@'%' IDENTIFIED BY '$(cat /run/secrets/dbbackuppassword)';
+GRANT RELOAD, PROCESS, LOCK TABLES, REPLICATION CLIENT ON *.* TO '$MARIA_DB_BACKUP_USER'@'%';
+FLUSH PRIVILEGES;
 EOF
-mariadb-admin -u root -p"$DB_ROOT_PASSWORD" shutdown
+mariadb-admin -u root -p"$(cat /run/secrets/dbrootpassword)" shutdown
 fi
 #creates runtime dir for the connection sockets. ensures it exists at every runtime not just first install
 mkdir -p /run/mysqld
