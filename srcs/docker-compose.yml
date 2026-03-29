@@ -94,6 +94,21 @@ services:
             wordpress:
               condition: service_healthy
 
+    mariadb-backup:
+        container_name: mariadb-backup
+        build: ./mariadb-backup
+        networks:
+          - inception
+        volumes:
+          - mariadb-copy:/backups #will reach db across docker network
+        restart: unless-stopped
+        env_file: ../.env
+        secrets:
+          - dbpassword
+        depends_on:
+            mariadb:
+              condition: service_healthy
+
 networks:
     inception:
         driver: bridge
@@ -103,6 +118,8 @@ volumes:
         name: mariadb_volume
     nginx_wp:
         name: wp_volume
+    mariadb-copy:
+        name: mariadb-backup-volume
     
 
 secrets:
