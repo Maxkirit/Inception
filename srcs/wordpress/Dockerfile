@@ -15,6 +15,8 @@ RUN apk update && apk upgrade && apk add curl && apk add netcat-openbsd && \
             php82-zip \
             php82-opcache \
             php82-redis \
+            php82-ctype \
+            php82-sockets \
             php82-tokenizer && \
     rm -rf /var/cache/apk/*
 
