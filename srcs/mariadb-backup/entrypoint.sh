@@ -9,7 +9,9 @@ mariadb-backup --backup --target-dir=/backups/full \
     --host="$DB_HOST" \
     --user="$MARIA_DB_BACKUP_USER" \
     --password="$(cat /run/secrets/dbbackuppassword)" \
+    --log-error=/var/log/mariabackup.log 2>/dev/null
 
+grep -i "error" /var/log/mariabackup.log >&2 || true
 #prepares i guess
 mariadb-backup --prepare --target-dir=/backups/full \
 

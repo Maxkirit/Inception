@@ -18,3 +18,6 @@ mariadb-backup --backup \
     --password="$(cat /run/secrets/dbbackuppassword)" \
     --target-dir="$INC_DIR" \
     --incremental-basedir="$FULL_DIR" \
+    --log-error=/var/log/mariabackup.log 2>/dev/null
+
+grep -i "error" /var/log/mariabackup.log >&2 || true
