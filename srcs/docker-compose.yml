@@ -105,6 +105,7 @@ services:
           - mariadb-copy:/backups #will reach db across docker network
         restart: unless-stopped
         env_file: ../.env
+        init: true #adds a small process on top as PID1 which helps with crond signal handling and persmissions
         secrets:
           - dbbackuppassword
         depends_on:
