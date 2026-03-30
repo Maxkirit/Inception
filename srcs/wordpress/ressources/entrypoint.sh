@@ -53,6 +53,7 @@ rm /tmp/redis_config.php
 
 wp plugin install redis-cache --activate
 wp redis enable
+chown -R www-data:www-data /var/www/html/wp-content
 fi
 
 if ! wp user get "$WP_USER" --allow-root &> /dev/null; then
