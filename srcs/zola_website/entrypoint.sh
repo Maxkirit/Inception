@@ -2,6 +2,7 @@
 set -e
 
 cd /project
-zola build --base-url "$ZOLA_URL" --output-dir "$ZOLA_DIR" --force
-# cp -r /tmp/zola_output/* /data/
-# rm -rf /tmp/zola_output
+mkdir -p /tmp/zola_output
+zola build --base-url "$ZOLA_URL" --output-dir /tmp/zola_output --force
+cp -r /tmp/zola_output/* $ZOLA_DIR
+rm -rf /tmp/zola_output
