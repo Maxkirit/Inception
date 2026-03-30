@@ -1,5 +1,7 @@
 services:
     wordpress:
+        image: wordpress
+        pull_policy: build
         container_name: wordpress
         build: ./wordpress
         volumes:
@@ -20,6 +22,8 @@ services:
                 condition: service_healthy
 
     mariadb:
+        image: mariadb
+        pull_policy: build
         container_name: mariadb
         build:
             context: ./mariadb
@@ -38,6 +42,8 @@ services:
         restart: unless-stopped
     
     nginx:
+        image: nginx
+        pull_policy: build
         container_name: nginx
         build: ./nginx
         volumes:
@@ -63,6 +69,8 @@ services:
                 condition: service_completed_successfully
     
     adminer:
+        image: adminer
+        pull_policy: build
         container_name: adminer
         build: ./adminer
         env_file:
@@ -75,6 +83,8 @@ services:
               condition: service_healthy
     
     redis:
+        image: redis
+        pull_policy: build
         container_name: redis
         build: ./redis
         networks:
@@ -82,6 +92,8 @@ services:
         restart: unless-stopped
 
     ftp:
+        image: ftp
+        pull_policy: build
         container_name: ftp
         build: ./ftp
         networks:
@@ -99,6 +111,8 @@ services:
               condition: service_healthy
 
     mariadb-backup:
+        image: mariadb-backup
+        pull_policy: build
         container_name: mariadb-backup
         build: ./mariadb-backup
         networks:
@@ -117,6 +131,8 @@ services:
 
 
     zola_website:
+        image: zola_website
+        pull_policy: build
         container_name: zola_website
         build: ./zola_website
         env_file: ../.env
