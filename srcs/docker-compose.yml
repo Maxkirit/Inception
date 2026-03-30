@@ -42,6 +42,7 @@ services:
         build: ./nginx
         volumes:
             - nginx_wp:/var/www/html
+            - zola:/var/www/html/zola
         ports:
             - "443:443"
         networks:
@@ -58,6 +59,8 @@ services:
               condition: service_healthy
             redis:
               condition: service_healthy
+            zola_website:
+                condition: service_completed_successfully
     
     adminer:
         container_name: adminer
@@ -112,6 +115,18 @@ services:
             mariadb:
               condition: service_healthy
 
+
+    zola_website:
+        container_name: zola_website
+        build: ./zola_website
+        env_file: ../.env
+        networks:
+            - inception
+        volumes:
+            - zola:/data
+        restart: on-failure:5
+        
+
 networks:
     inception:
         driver: bridge
@@ -123,6 +138,8 @@ volumes:
         name: wp_volume
     mariadb-copy:
         name: mariadb-backup-volume
+    zola:
+        name: zola
     
 
 secrets:
